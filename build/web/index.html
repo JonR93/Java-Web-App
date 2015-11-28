@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Home</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript">        
+            var xmlhttp;
+            function getTimesVoted() {
+                if (window.XMLHttpRequest){
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }else{
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                var url = "SessionVotesServlet";
+                xmlhttp.open("POST", url, true);
+                xmlhttp.onreadystatechange = callback;
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send();
+            }
+
+            function callback() {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        //change the timesVoted div to display the number of votes this session
+                        document.getElementById("timesVoted").innerHTML = "I have voted " + xmlhttp.responseText + " times.";
+                    }
+                }
+            }
+        </script>
+    </head>
+    
+    <body>
+        <!-- Button to link to the voting page -->
+        <form action="StartPageServlet">
+            <input type="submit" value="Go vote">
+        </form>
+        <br>
+        <form action='QueryVotingResultsServlet'>
+            <input type='submit' value='View Results'>
+        </form>
+        <br>
+        <input type="button" onclick="getTimesVoted()" value="My votes">
+        <div id="timesVoted"></div>
+    </body>
+</html>
